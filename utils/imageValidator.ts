@@ -1,4 +1,4 @@
-const DEFAULT_ALLOWED_HOSTS = ['amazonaws.com', 'cloudfront.net', 'freepik.com']
+const DEFAULT_ALLOWED_HOSTS = ['amazonaws.com', 'cloudfront.net', 'freepik.com', 'unsplash.com']
 
 const configuredAllowedHosts = (process.env.SANITY_URL_ALLOWED_TYPE ?? '')
   .split(',')
@@ -15,7 +15,7 @@ const matchAllowedUrlType = (host: string): boolean => {
 }
 
 export const imageValidator = (value: unknown): true | string => {
-  if (!value || typeof value !== 'string') {
+  if (typeof value !== 'string' || value.trim().length === 0) {
     return 'Image URL is required'
   }
 

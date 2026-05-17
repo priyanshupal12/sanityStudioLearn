@@ -1,4 +1,4 @@
-import {defineField, defineType} from 'sanity';
+import {defineField, defineType} from 'sanity'
 
 export const linkType = defineType({
   name: 'links',
@@ -29,7 +29,7 @@ export const linkType = defineType({
       name: 'internalReference',
       title: 'Internal Reference',
       type: 'reference',
-      to: [{type: 'PageType'}, {type: 'post'}],
+      to: [{type: 'pageType'}, {type: 'post'}],
       hidden: ({parent}) => parent?.linkType !== 'internal',
     }),
     defineField({
@@ -68,7 +68,7 @@ export const linkType = defineType({
         | {
             linkType?: string
             internalReference: {_ref?: string}
-            externalLink?: URL
+            externalUrl?: URL
           }
         | undefined
 
@@ -78,7 +78,7 @@ export const linkType = defineType({
         return 'Internal Link Required Internal Reference'
       }
 
-      if (link.linkType === 'external' && !link?.externalLink) {
+      if (link.linkType === 'external' && !link?.externalUrl) {
         return 'External Link Required External URL'
       }
       return true

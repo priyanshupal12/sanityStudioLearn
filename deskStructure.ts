@@ -14,8 +14,7 @@ export const deskStructure: StructureResolver = (S) =>
       singletonItem(S, 'Site Header', 'header', 'header'),
       singletonItem(S, 'Site Footer', 'footer', 'footer'),
       S.divider(),
-      S.documentTypeListItem('post').title('Posts'),
-      ...S.documentTypeListItems().filter(
-        (item) => !['pageType', 'post'].includes(item.getId() ?? ''),
-      ),
+      S.listItem().title('Posts').child(S.documentTypeList('post')),
+      S.listItem().title('PageType').child(S.documentTypeList('pageType')),
+      S.listItem().title('Shared Section').child(S.documentTypeList('sharedSection')),
     ])

@@ -21,7 +21,7 @@ export const sharedSectionType = defineType({
       title: 'Section Content',
       type: 'array',
       of: sectionArrayMember,
-      validation: (rule) => rule.required().min(1).max(1),
+      validation: (rule) => rule.required().min(1)
     }),
   ],
 })

@@ -2,7 +2,7 @@ import {defineArrayMember, defineField, defineType} from 'sanity'
 import {sectionArrayMember} from '../objects/sections/sectionArrayMember'
 
 export const pageType = defineType({
-  name: 'PageType',
+  name: 'pageType',
   title: 'Page Type',
   type: 'document',
   fields: [

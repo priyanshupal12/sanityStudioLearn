@@ -1,4 +1,4 @@
-import {defineField, defineType} from 'sanity'
+import {defineField, defineType, defineArrayMember} from 'sanity'
 
 export const siteHeader = defineType({
   name: 'header',
@@ -6,18 +6,33 @@ export const siteHeader = defineType({
   type: 'document',
   fields: [
     defineField({
-      name: 'title',
-      title: 'Title',
-      type: 'string',
+      name: 'brandLogo',
+      title: 'Brand Logo',
+      type: 'imageType',
     }),
+
     defineField({
-      name: 'varients',
-      title: 'Market-Locale Variants',
+      name: 'market',
+      title: 'Market',
+      type: 'string',
+      validation: (rule) => rule.required(),
+    }),
+
+    defineField({
+      name: 'locale',
+      title: 'Locale',
+      type: 'string',
+      validation: (rule) => rule.required(),
+    }),
+
+    defineField({
+      name: 'navigationItems',
+      title: 'Navigation Items',
       type: 'array',
       of: [
-        {
-          type: 'varient',
-        },
+        defineArrayMember({
+          type: 'links',
+        }),
       ],
     }),
   ],
