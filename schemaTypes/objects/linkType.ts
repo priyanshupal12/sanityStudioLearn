@@ -1,4 +1,5 @@
 import {defineField, defineType} from 'sanity'
+import {isPortableTextAnnotation} from '../../utils/helper/labelLinkHelper'
 
 export const linkType = defineType({
   name: 'links',
@@ -9,7 +10,14 @@ export const linkType = defineType({
       name: 'label',
       title: 'Label',
       type: 'string',
-      validation: (rule) => rule.required(),
+      // validation: (rule) => rule.custom((value, context) => {
+      //   if (isPortableTextAnnotation(context.path)) {
+      //     return true
+      //   }
+      //   return value?.trim()
+      //   ? true
+      //   : 'Label is required' 
+      // })
     }),
     defineField({
       name: 'linkType',

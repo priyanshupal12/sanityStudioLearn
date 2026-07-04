@@ -14,14 +14,19 @@ export const heroSectionType = defineType({
     defineField({
       name: 'title',
       title: 'Title',
-      type: 'string',
+      type: 'portableText',
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'subtitle',
       title: 'Subtitle',
-      type: 'string',
+      type: 'portableText',
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'debugTableOutsidePortableText',
+      title: 'Debug Table Outside Portable Text',
+      type: 'tableType',
     }),
     defineField({
       name: 'highlight',

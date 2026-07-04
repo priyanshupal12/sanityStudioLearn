@@ -23,7 +23,7 @@ export const pageType = defineType({
       title: 'Slug',
       type: 'slug',
       options: {
-        source: 'pages',
+        source: 'page',
       },
       validation: (rule) => rule.required(),
     }),
@@ -69,8 +69,8 @@ export const pageType = defineType({
       validation: (rule) => rule.required().min(1),
     }),
   ],
-  validation: (Rule) =>
-    Rule.custom((doc) => {
+  validation: (rule) =>
+    rule.custom((doc) => {
       if (!doc) return true
       if (doc.pageStatus === 'published' && !doc.publishAt)
         return 'publishAt required when published'

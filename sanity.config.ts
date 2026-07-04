@@ -4,6 +4,7 @@ import {visionTool} from '@sanity/vision'
 import {schemaTypes} from './schemaTypes'
 import {deskStructure} from './deskStructure'
 import {pageStatusActionsResolver} from './utils/pageStatusController'
+import {colorInput} from '@sanity/color-input'
 
 export default defineConfig({
   name: 'default',
@@ -12,7 +13,7 @@ export default defineConfig({
   projectId: 'imwa25gr',
   dataset: 'production',
 
-  plugins: [structureTool({structure: deskStructure}), visionTool()],
+  plugins: [structureTool({structure: deskStructure}), visionTool(), colorInput()],
   document: {
     actions: pageStatusActionsResolver,
   },
