@@ -24,11 +24,6 @@ export const heroSectionType = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'debugTableOutsidePortableText',
-      title: 'Debug Table Outside Portable Text',
-      type: 'tableType',
-    }),
-    defineField({
       name: 'highlight',
       title: 'Key Highlinghts',
       type: 'array',
