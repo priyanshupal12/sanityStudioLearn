@@ -33,7 +33,17 @@ const createCustomUnPublishAction = (
     return {
       ...originalResult,
       onHandle: () => {
-        patch.execute([{set: {pageStatus: 'draft'}}, {unset: ['publishAt']}])
+        // If there is no draft, patching will create a "sparse" draft with only the patched fields.
+        // When unpublish then deletes the published document, all other data is lost.
+        // To fix this, we copy all published data into the draft patch if no draft exists.
+        const publishedData = props.published || {}
+        const { _id, _createdAt, _updatedAt, _rev, publishAt, ...restPublished } = publishedData as any
+        
+        const setPayload = props.draft 
+          ? { pageStatus: 'draft' }
+          : { ...restPublished, pageStatus: 'draft' }
+
+        patch.execute([{set: setPayload}, {unset: ['publishAt']}])
         originalResult.onHandle?.()
       },
     }
@@ -41,7 +51,7 @@ const createCustomUnPublishAction = (
 }
 
 export const pageStatusActionsResolver: DocumentActionsResolver = (prev, context) => {
-  if (context.schemaType !== 'PageType') return prev
+  if (context.schemaType !== 'pageType') return prev
 
   return prev.map((action) => {
     if (action.action === 'publish') return createCustomPublishAction(action)

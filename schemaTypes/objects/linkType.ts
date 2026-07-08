@@ -1,5 +1,5 @@
-import {defineField, defineType} from 'sanity'
-import {isPortableTextAnnotation} from '../../utils/helper/labelLinkHelper'
+import { defineField, defineType } from 'sanity'
+import { isPortableTextAnnotation } from '../../utils/helper/labelLinkHelper'
 
 export const linkType = defineType({
   name: 'links',
@@ -10,14 +10,14 @@ export const linkType = defineType({
       name: 'label',
       title: 'Label',
       type: 'string',
-      // validation: (rule) => rule.custom((value, context) => {
-      //   if (isPortableTextAnnotation(context.path)) {
-      //     return true
-      //   }
-      //   return value?.trim()
-      //   ? true
-      //   : 'Label is required' 
-      // })
+      validation: (rule) => rule.custom((value, context) => {
+        if (isPortableTextAnnotation(context.path)) {
+          return true
+        }
+        return value?.trim()
+          ? true
+          : 'Label is required'
+      })
     }),
     defineField({
       name: 'linkType',
@@ -26,8 +26,8 @@ export const linkType = defineType({
       initialValue: 'internal',
       options: {
         list: [
-          {title: 'Internal', value: 'internal'},
-          {title: 'Extarnal', value: 'external'},
+          { title: 'Internal', value: 'internal' },
+          { title: 'Extarnal', value: 'external' },
         ],
         layout: 'radio',
       },
@@ -37,18 +37,18 @@ export const linkType = defineType({
       name: 'internalReference',
       title: 'Internal Reference',
       type: 'reference',
-      to: [{type: 'pageType'}, {type: 'post'}],
-      hidden: ({parent}) => parent?.linkType !== 'internal',
+      to: [{ type: 'pageType' }, { type: 'post' }],
+      hidden: ({ parent }) => parent?.linkType !== 'internal',
     }),
     defineField({
       name: 'externalUrl',
       title: 'External URL',
       type: 'url',
-      hidden: ({parent}) => parent?.linkType !== 'external',
+      hidden: ({ parent }) => parent?.linkType !== 'external',
       validation: (rule) =>
         rule
           .custom((value, context) => {
-            const parent = context.parent as {linkType: string} | undefined
+            const parent = context.parent as { linkType: string } | undefined
             if (parent?.linkType === 'external') {
               if (!value) return 'External Url is Required'
               if (!/^https:\/\//.test(value)) {
@@ -74,10 +74,10 @@ export const linkType = defineType({
     rule.custom((value) => {
       const link = value as
         | {
-            linkType?: string
-            internalReference: {_ref?: string}
-            externalUrl?: URL
-          }
+          linkType?: string
+          internalReference: { _ref?: string }
+          externalUrl?: URL
+        }
         | undefined
 
       if (!link) return true
@@ -98,7 +98,7 @@ export const linkType = defineType({
       internalReference: 'internalReference',
       externalUrl: 'externalUrl',
     },
-    prepare: ({label, linkType, internalReference, externalUrl}) => ({
+    prepare: ({ label, linkType, internalReference, externalUrl }) => ({
       title: label ?? 'Untitled Link',
       subtitle:
         linkType === 'internal'

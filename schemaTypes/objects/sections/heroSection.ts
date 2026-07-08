@@ -1,4 +1,4 @@
-import {defineField, defineType} from 'sanity'
+import { defineField, defineType } from 'sanity'
 
 export const heroSectionType = defineType({
   name: 'heroSection',
@@ -24,11 +24,16 @@ export const heroSectionType = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'highlight',
-      title: 'Key Highlinghts',
+      name: 'supportingText',
+      title: 'Supporting Text',
+      type: 'portableText',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'cta',
+      title: 'CTA',
       type: 'array',
-      of: [{type: 'string'}],
-      validation: (rule) => rule.required().min(1).max(4),
+      of: [{ type: 'links' }]
     }),
     defineField({
       name: 'heroImage',
