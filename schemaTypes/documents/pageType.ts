@@ -1,5 +1,21 @@
 import {defineArrayMember, defineField, defineType} from 'sanity'
 import {sectionArrayMember} from '../objects/sections/sectionArrayMember'
+import type {MarketCode} from '../../types'
+import {MARKET_LANGUAGES} from '../../utils/helper/marketLangHelper'
+import {LanguageSelect} from '../../componets/LanguageSelect'
+
+const MARKET_OPTIONS = (Object.keys(MARKET_LANGUAGES) as MarketCode[]).map((value) => ({
+  title: value.toUpperCase(),
+  value,
+}))
+
+// const LANGUAGE_OPTIONS = Array.from(
+//   new Map(
+//     Object.values(MARKET_LANGUAGES)
+//       .flatMap(({languages}) => languages)
+//       .map((language) => [language.value, language]),
+//   ).values(),
+// )
 
 export const pageType = defineType({
   name: 'pageType',
@@ -25,7 +41,38 @@ export const pageType = defineType({
       options: {
         source: 'page',
       },
+      //singleton this slug must not repeat for other docs of this doc type
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'market',
+      title: 'Market',
+      type: 'string',
+      options: {
+        list: MARKET_OPTIONS,
+      },
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'language',
+      title: 'Language',
+      type: 'string',
+      components: {
+        input: LanguageSelect,
+      },
+      // options: {
+      //   list: LANGUAGE_OPTIONS,
+      // },
+      //this lang and market should be singleton accross this doc type meaning only one doc should have same lang and market combo
+      validation: (rule) =>
+        rule.required().custom((value, context) => {
+          const parent = context.parent as {market?: MarketCode} | undefined
+          const market = parent?.market
+          if (!market) return true
+          if (!value) return true
+          const {languages} = MARKET_LANGUAGES[market]
+          return languages.some((l) => l.value === value) || 'invalid language'
+        }),
     }),
     defineField({
       name: 'seo',
@@ -83,7 +130,7 @@ export const pageType = defineType({
     },
     prepare: ({title, subtitle}) => ({
       title: title,
-      subtitle: `Status ${subtitle ?? 'draft'}`
+      subtitle: `Status ${subtitle ?? 'draft'}`,
     }),
   },
 })
